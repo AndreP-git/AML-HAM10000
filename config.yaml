@@ -1,0 +1,40 @@
+data:
+  raw_dir: data/raw
+  splits_csv: data/processed/metadata_splits.csv
+  image_size: 224
+  # Per-channel mean/std computed on the train split
+  normalization:
+    mean: [0.7636, 0.5442, 0.5683]
+    std: [0.1421, 0.1546, 0.1715]
+
+split:
+  train_frac: 0.70
+  val_frac: 0.15
+  test_frac: 0.15
+  seed: 42
+
+model:
+  name: resnet18
+  pretrained: true
+  freeze_backbone: false
+
+#   none            – plain cross-entropy, (baseline)
+#   weighted_loss   – cross-entropy weighted by inverse class frequency
+#   oversampling    – WeightedRandomSampler so classes are balanced on average
+imbalance: none
+
+train:
+  epochs: 30
+  batch_size: 128
+  lr: 3.0e-4
+  weight_decay: 1.0e-4
+  num_workers: 8
+  amp: true  # mixed-precision on GPU
+  early_stopping_patience: 7
+  scheduler_patience: 3
+  seed: 42
+
+paths:
+  logs_dir: logs
+  models_dir: models
+  figures_dir: figures
